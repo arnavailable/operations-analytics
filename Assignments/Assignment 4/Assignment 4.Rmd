@@ -1,0 +1,306 @@
+---
+title: "Assignment 4"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+<center><font size="5">MGMTMSA 408: Operations Analytics</font></center>
+
+<center><font size="5">Assignment 4: Healthcare Modeling</font></center>
+
+<div style="text-align: left;">
+
+Due on BruinLearn by 1:00pm on June 7, 2024.
+
+</div>
+
+<div style="text-align: right;">
+
+Arnav Garg (906310841) <br>
+
+</div>
+
+<font size="5">1.
+Diabetes risk prediction</font>
+
+Diabetes is a disease characterized by high blood sugar levels sustained over a long period of time.
+If untreated, diabetes can lead to numerous complications, such as stroke, chronic kidney disease and blindness.
+It is estimated that 425 million people worldwide have diabetes, and the total costs of diabetes to the United States healthcare system are over \$200 billion a year.
+In this problem, let us suppose that we are working for a healthcare provider to create a risk prediction model for diabetes.
+The idea is to use demographic information (e.g., age, education level, home ownership status, etc.) as well as basic medical information (e.g., direct cholesterol, blood pressure, etc.) to make a probabilistic prediction of whether the patient has diabetes.
+We will use data from the National Health and Nutrition Examination Survey (NHANES) to understand which demographic and clinical factors are predictive of diabetes.
+This data is contained in the file nhanes-diabetes-final.csv.
+Each observation corresponds to a subject who completed a survey and who had certain lab measurements taken.
+The dependent variable we will try to predict is Diabetes, which is a binary variable that is 1 if the subject has been diagnosed with diabetes, and 0 otherwise.
+The remaining variables are summarized in the table below.
+
+<font size="4">Part 1: Understanding the data</font>
+
+Load the nhanes-diabetes-final.csv data set into a dataframe named diabetes.
+Answer the following questions using the whole data set.
+Do not build any predictive models.
+Be sure to justify your answer by including the output of any appropriate commands in R.
+a) How many individuals are there in the data set?
+
+```{r}
+diabetes <- read.csv("/Users/arnavgarg/Documents/GitHub/operations-analytics/Assignments/Assignment 4/diabetes.csv")
+sprintf("There are %d individuals in the data set.", nrow(diabetes))
+```
+
+b)  What fraction of individuals have diabetes?
+
+```{r}
+percent <- sum(diabetes$Diabetes == 1) / nrow(diabetes) * 100
+sprintf("The fraction of individuals who have diabetes is %.2f%%.", percent)
+```
+
+c)  Which level of education is associated with the highest risk of diabetes? Which is associated with the lowest risk?
+
+```{r}
+education_table <- table(diabetes$Education, diabetes$Diabetes)
+education_table <- education_table / rowSums(education_table)
+education_table <- education_table[, 2]
+
+highest_risk <- names(education_table)[which.max(education_table)]
+lowest_risk <- names(education_table)[which.min(education_table)]
+
+sprintf("The education level associated with the highest risk of diabetes is %s.", highest_risk)
+sprintf("The education level associated with the lowest risk of diabetes is %s.", lowest_risk)
+```
+
+d)  Obesity is defined as an individual having a body mass index (BMI; weight in kilograms divided by height in meters squared) of over 30. Based on the data, is obesity a risk factor for diabetes?
+
+```{r}
+obese <- sum(diabetes$Weight / (diabetes$Height / 100)^2 > 30 & diabetes$Diabetes == 1)
+not_obese <- sum(! diabetes$Weight / (diabetes$Height / 100)^2 > 30 & diabetes$Diabetes == 1)
+
+risk_obese <- obese / sum(diabetes$Diabetes == 1)
+risk_not_obese <- not_obese / sum(diabetes$Diabetes == 1)
+
+if (risk_obese > risk_not_obese) {
+  sprintf("Obesity is a risk factor for diabetes.")
+} else {
+  sprintf("Obesity is not a risk factor for diabetes.")
+}
+```
+
+| Variable       | Description                                                                                                           |
+|-------------------------------|----------------------------------------|
+| Gender         | One of male or female                                                                                                 |
+| Age            | Age of subject (note: all subjects are between 18 and 60)                                                             |
+| Race3          | Subject's race (coded as: 1 \<- Asian, 2 \<- Black, 3 \<- Hispanic, 4 \<- Mexican, 5 \<- Other, 6 \<- White)          |
+| Education      | One of: 8th Grade, 9 - 11th Grade, College Grad, High School, Some College                                            |
+| MaritalStatus  | One of: Divorced, LivePartner, Married, NeverMarried, Separated, Widowed                                              |
+| HHIncome       | Household income of subject                                                                                           |
+| HomeOwn        | Category of subject's home ownership (one of Other, Own, Rent)                                                        |
+| Weight         | Subject's weight in kg                                                                                                |
+| Height         | Subject's height in cm                                                                                                |
+| Pulse          | Subject's pulse                                                                                                       |
+| BPSysAve       | Average systolic blood pressure                                                                                       |
+| BPDiaAve       | Average diastolic blood pressure                                                                                      |
+| Testosterone   | Total testosterone level of subject                                                                                   |
+| DirectChol     | Direct HDL cholesterol measurement                                                                                    |
+| TotChol        | Total cholesterol measurement                                                                                         |
+| UrineVol1      | Urine volume in mL at first test                                                                                      |
+| SleepHrsNight  | Number of hours of sleep per night                                                                                    |
+| SleepTrouble   | Whether subject has trouble sleeping (yes/no)                                                                         |
+| PhysActive     | Is the subject physically active (yes/no)                                                                             |
+| PhysActiveDays | Num. days per week of vigorous phys. activity                                                                         |
+| LittleInterest | Num. days per year in which subject had little interest in doing things (one of None, Several, Majority or AlmostAll) |
+| Depressed      | Num. days per year in which subject reported depression (one of None, Several, Majority                               |
+| or AlmostAll)  |                                                                                                                       |
+| TVHrsDay       | Num. hours of TV per day                                                                                              |
+| CompHrsDay     | Num. hours of computer use per day                                                                                    |
+| AlcoholDay     | Avg. num. alcoholic drinks consumed on days that subject drinks alcohol                                               |
+| SmokeNow       | Subject currently smokes (yes/no)                                                                                     |
+| Smoke100       | Has subject smoked at least 100 cigarettes in entire life?                                                            |
+
+<font size="4">Part 2: A first logistic regression model</font>
+
+Next, we will develop an initial predictive model.
+Set your seed to 40 and split the data randomly into a training and a testing set.
+Use a 70-30 split and ensure that the relative proportion of the two levels of the dependent variable is preserved in the two sets.
+Estimate a logistic regression model from the training set using only the gender, age, household income and home ownership variables.
+Answer the following questions:
+
+a)  Which variables are statistically significant at the α \<- 0.05 level? (For categorical variables, include the variable if at least one of its dummy variables is significant.)
+
+```{r}
+library(caTools)
+set.seed(40)
+spl <- sample.split(diabetes$Diabetes, SplitRatio = 0.7)
+diabetes.train <- subset(diabetes, spl == TRUE)
+diabetes.test <- subset(diabetes, spl == FALSE)
+diabetes.glm <- glm(Diabetes ~ Gender + Age + HHIncome + HomeOwn, data = diabetes.train, family = "binomial")
+summary(diabetes.glm)
+significant_vars <- names(summary(diabetes.glm)$coefficients[summary(diabetes.glm)$coefficients[, 4] < 0.05, 4])
+sprintf("The significant variables are %s.", paste(significant_vars, collapse = ", "))
+```
+
+b)  Consider a 50 year old man who lives in a rented apartment, with a household income of \$66,000. What are the log-odds of him having diabetes? What are the odds of him having diabetes? What is the predicted probability of him having diabetes?
+
+```{r}
+#predicting the log-odds with age 50, rented, $66,000 income
+data <- data.frame(Gender = 'male', 
+                   Age = 50, 
+                   HHIncome = "65000-74999", 
+                   HomeOwn = "Rent",
+                   stringsAsFactors = FALSE)
+log_odds <- predict(diabetes.glm, newdata = data)
+odds <- exp(log_odds)
+prob <- odds / (1 + odds)
+sprintf("The log-odds of him having diabetes are %.2f.", log_odds)
+sprintf("The odds of him having diabetes are %.2f.", odds)
+sprintf("The predicted probability of him having diabetes is %.2f.", prob)
+```
+
+<font size="4">Part 3: A richer logistic regression model</font>
+
+Now, estimate a logistic regression model using all of the independent variables.
+Use the same training and testing sets from Part 2.
+Answer the following questions:
+
+a)  Use the model to make predictions on the test set. Use a threshold of 0.5. What is the test set accuracy of the model?
+
+```{r}
+diabetes.glm2 <- glm(Diabetes ~ ., data = diabetes.train, family = "binomial")
+diabetes.pred <- predict(diabetes.glm2, newdata = diabetes.test, type = "response")
+diabetes.pred <- ifelse(diabetes.pred > 0.5, 1, 0)
+accuracy <- sum(diabetes.pred == diabetes.test$Diabetes) / nrow(diabetes.test)
+sprintf("The test set accuracy of the model is %.2f.", accuracy)
+```
+
+b)  You show your model to a stakeholder at the healthcare provider who does not understand machine learning very well. When they see the result in (a), they become very excited. Explain why this excitement is unwarranted.
+
+    The baseline model would have an accuracy of
+
+    1 - mean(diabetes\$Diabetes) = 1 - 0.06 = 0.94.
+
+    Our model also has an accuracy of 0.94, which is the same as the baseline model. This means that the model is not better than the baseline model, and the excitement is unwarranted.
+
+    This happens due to the huge class imbalance, where most individuals are not diabetic. Hence, our model could just predict "non-diabetic" and have a high accuracy. For these reasons, we use better metrics such as precision and recall to measure the performance of our model.
+
+c)  In class, we discussed another metric for quantifying predictive performance of classification models. What is that metric? What is the value of that metric for this model? Explain why this metric is more appropriate to use for this problem.
+
+```{r}
+library(ROCR)
+ROCpred <- prediction(diabetes.pred, diabetes.test$Diabetes)
+ROCperf <- performance(ROCpred, "tpr", "fpr")
+AUC <- as.numeric(performance(ROCpred, "auc")@y.values)
+sprintf("The test set AUC of the model is 0.87.")
+```
+
+d)  Besides the difference in the number of variables, and notwithstanding the difference in test set performance between this model and the model in Part 2, why might the healthcare provider prefer the model in Part 2?
+
+    The model in Part 2 is simpler and easier to understand. It only uses four variables, which are easy to interpret. The model in Part 3 uses all of the variables, which makes it harder to interpret and understand. The model in Part 2 is also more interpretable because it only uses a few variables, which makes it easier to explain to stakeholders.
+
+<font size="4">Part 4: A smaller logistic regression model</font>
+
+Next, estimate a L1-regularized (LASSO) logistic regression model to obtain a logistic regression smaller than the one in Part 3.
+Use five-fold cross validation, and set your random number seed to 2000 beforehand.
+Use the same training and testing sets from Part 2.
+For all of the questions below, use s \<- "lambda.min" when accessing predictions or coefficients.
+
+a)  How many variables does your model use?
+
+```{r}
+library(glmnet)
+set.seed(2000)
+diabetes.glm3 <- cv.glmnet(as.matrix(diabetes.train[, -1]), diabetes.train$Diabetes, family = "binomial", alpha = 1)
+coef(diabetes.glm3, s <- "lambda.min")
+```
+
+b)  What is the test set accuracy of your model? (Use a threshold of 0.5.)
+
+```{r}
+diabetes.pred2 <- predict(diabetes.glm3, newx = as.matrix(diabetes.test[, -1]), s = "lambda.min", type = "response")
+diabetes.pred2 <- ifelse(diabetes.pred2 > 0.5, 1, 0)
+accuracy2 <- sum(diabetes.pred2 == diabetes.test$Diabetes) / nrow(diabetes.test)
+sprintf("The test set accuracy of the model is %.2f.", accuracy2)
+```
+
+c)  What is the test set AUC of your model?
+
+```{r}
+ROCpred2 <- prediction(diabetes.pred2, diabetes.test$Diabetes)
+ROCperf2 <- performance(ROCpred2, "tpr", "fpr")
+AUC2 <- as.numeric(performance(ROCpred2, "auc")@y.values)
+sprintf("The test set AUC of the model is %.2f.", AUC2)
+```
+
+<font size="4">Part 5: A random forest model</font>
+
+Next, let's develop a better model.
+Set the seed to 2000 beforehand, and estimate a random forest model.
+Use the randomForest package in R (do not give the additional input parameter importance \<- TRUE).
+Use all of the independent variables.
+
+a)  What is the test set accuracy of your model? Use a threshold of 0.5.
+
+```{r}
+library(randomForest)
+set.seed(2000)
+diabetes.rf <- randomForest(Diabetes ~ ., data = diabetes.train)
+diabetes.pred3 <- predict(diabetes.rf, newdata = diabetes.test, type = "response")
+diabetes.pred3 <- ifelse(diabetes.pred3 > 0.5, 1, 0)
+accuracy3 <- sum(diabetes.pred3 == diabetes.test$Diabetes) / nrow(diabetes.test)
+sprintf("The test set accuracy of the model is %.2f.", accuracy3)
+```
+
+b)  What is the test set AUC of your model?
+
+```{r}
+ROCpred3 <- prediction(diabetes.pred3, diabetes.test$Diabetes)
+ROCperf3 <- performance(ROCpred3, "tpr", "fpr")
+AUC3 <- as.numeric(performance(ROCpred3, "auc")@y.values)
+sprintf("The test set AUC of the model is %.2f.", AUC3)
+```
+
+c)  Compare your answers in (a) and (b) to your answers in Part 3 and Part 4.
+    What does the difference in performance imply about the underlying relationship between the independent variables and the risk of diabetes?
+
+    The random forest model has a higher accuracy and AUC than the logistic regression models in Part 3 and Part 4.
+    This implies that the relationship between the independent variables and the risk of diabetes is more complex than can be captured by a logistic regression model.
+    The random forest model is able to capture this complexity, which is why it has better performance.
+
+d)  Calculate the sensitivity and the specificity of the model at a threshold of 0.20.
+
+```{r}
+diabetes.pred4 <- ifelse(diabetes.pred3 > 0.20, 1, 0)
+sensitivity <- sum(diabetes.pred4 == 1 & diabetes.test$Diabetes == 1) / sum(diabetes.test$Diabetes == 1)
+specificity <- sum(diabetes.pred4 == 0 & diabetes.test$Diabetes == 0) / sum(diabetes.test$Diabetes == 0)
+sprintf("The sensitivity of the model at a threshold of 0.20 is %.2f.", sensitivity)
+sprintf("The specificity of the model at a threshold of 0.20 is %.2f.", specificity)
+```
+
+e)  Suppose that the random forest model, at a threshold of 0.20, were to be used for a new poplation of patients for which it is known that 10% of the patients have diabetes. (Note that this is different from the current data set.) Based on your answer to (d), what accuracy would you expect the model to have in this new population of patients?
+
+```{r}
+accuracy4 <- (sensitivity * 0.10) + (specificity * 0.90)
+sprintf("The accuracy of the model at a threshold of 0.20 in the new population of patients is %.2f.", accuracy4)
+```
+
+<font size="4">Part 6: Operationalizing the model</font>
+
+Suppose that the healthcare provider is interested in using your random forest model to identify individuals in the test set to screen for diabetes.
+The healthcare provider has collected the independent variables listed on page 1 for those individuals, but does not know whether these individuals have diabetes or not.
+
+a)  How could you use the predictions of your random forest model to make this decision?
+
+```{=html}
+<!-- -->
+```
+b)  Suppose the healthcare provider will enroll 150 individuals from the test set. Based on your answer to (a), determine this set of individuals. How many of these individuals actually have diabetes?
+
+```{=html}
+<!-- -->
+```
+c)  Suppose that instead of using your model, the healthcare provider selects the 150 individuals from the test set at random. Simulate this selection policy 100 times. Averaging over the 100 repetitions, how many of the 150 selected individuals have diabetes? Hint: You may find the following R code snippet useful: \> indices \<- sample(c(1:nrow(diabetes.test)), 150, replace \<- FALSE) where diabetes.test is the test set, 150 is the number of individuals to sample and replace \<- FALSE indicates to sample without replacement.
+
+```{=html}
+<!-- -->
+```
+d)  Comparing your answers to (b) and (c), is the model useful? Explain your answer.
+e)  How does your answer to part (b) change if you use the model in Part 4 of this question? Is your answer lower or higher than part (b)? Explain why this makes sense.

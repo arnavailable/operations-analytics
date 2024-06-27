@@ -1,0 +1,62 @@
+"Num","Location","Address..1","City","State","ZIP","lat","lon"
+1,"Olympic & Westwood","2215 Westwood Blvd.","Los Angeles","CA",90064,34.0431884,-118.4316897
+2,"Pico & Midvale","10911 W Pico Boulevard","Los Angeles","CA",90064,34.0396733,-118.4300214
+3,"Olympic & Sawtelle","11280 Olympic Blvd.","Los Angeles","CA",90064,34.0379156,-118.44079
+4,"Westwood & Missouri","1898 Westwood Blvd.","Westwood","CA",90025,34.0483736,-118.4353441
+5,"Santa Monica & Pontius","11155 Santa Monica Blvd","West Los Angeles","CA",90025,34.0475706,-118.4452513
+6,"Westwood & Lindbrook","1161 Westwood Blvd","Los Angeles","CA",90024,34.0594166,-118.444745
+7,"Ralphs Los Angeles #210","11727 W Olympic Blvd","Los Angeles","CA",90064,34.0349764,-118.449258
+8,"Ralphs-Westwood #759","10861 Weyburn Ave","Westwood","CA",90024,34.062651,-118.4439421
+9,"Broxton & Weyburn","10955 West Weyburn","Los Angeles","CA",90024,34.0624967,-118.4473763
+10,"Barrington & Sunset","11700 Barrington Court","Los Angeles","CA",90049,34.064485,-118.4694
+11,"Avenue of Stars & Constellation","1999 Avenue of the Stars","Century City","CA",90067,34.0588788,-118.4171318
+12,"Century Park East & Constellation","1875 Century Park East","Century City","CA",90067,34.0609111,-118.4147379
+13,"San Vicente & Barrington","11707 San Vicente Blvd","Los Angeles","CA",90049,34.0537676,-118.466026
+14,"Wilshire & Santa Monica","9811 S. Santa Monica Blvd","Beverly Hills","CA",90210,34.0680641,-118.4089378
+15,"Century Park East & Olympic","2049 Century Park East","Century City","CA",90067,34.0586075,-118.4131155
+16,"N Beverly & S. Santa Monica Blvd","428 North Beverly Drive","Beverly Hills","CA",90210,34.0706703,-118.4022033
+17,"Ralph's - Los Angeles #44","12057 Wilshire Blvd","Los Angeles","CA",90025,34.0449181,-118.4669613
+18,"Santa Monica & Bundy","12100 Santa Monica Blvd","West Los Angeles","CA",90025,34.0402816,-118.4633262
+19,"S. Beverly & Charleville","202 South Beverly Drive","Beverly Hills","CA",90212,34.064829,-118.3988262
+20,"Bristol Farms - Santa Monica","3105 Wilshire Blvd","Santa Monica","CA",90403,34.040251,-118.4728012
+21,"Ralph's - Los Angeles #198","9616 W. Pico Blvd","Los Angeles","CA",90035,34.0548658,-118.3979122
+22,"Olympic & Doheny","9049 Olympic Blvd.","Beverly Hills","CA",90211,34.0595795,-118.3895536
+23,"Wilshire & 26th","2525 Wilshire Blvd.","Santa Monica","CA",90403,34.0360351,-118.4777355
+24,"Von's-West Hollywood #2739","8969 Santa Monica Blvd.","West Hollywood","CA",90069,34.0835831,-118.3868829
+25,"Ralph's - Los Angeles #709","11361 National Blvd","Los Angeles","CA",90064,34.0260649,-118.4333223
+26,"Sepulveda & National","3006 Sepulveda Blvd","Los Angeles","CA",90064,34.027266,-118.4276689
+27,"Santa Monica & Robertson","8951 Santa Monica Blvd","West Hollywood","CA",90069,34.0839985,-118.385996
+28,"Vons - Los Angeles #2077","3118 S Sepulveda Blvd","Los Angeles","CA",90034,34.0266642,-118.4270459
+29,"Santa Monica & 26th","2461-A Santa Monica Blvd","Santa Monica","CA",90404,34.0326939,-118.4753404
+30,"Beverly & Robertson","164 N. Robertson","West Hollywood","CA",90048,34.0769701,-118.3835308
+31,"National & Barrington","11705 National Blvd","Los Angeles","CA",90064,34.0227695,-118.4389915
+32,"Pico & Stewart","2727 Pico Blvd.","Santa Monica","CA",90405,34.0243635,-118.460862
+33,"Cedars-Sinai Medical Center","8700 Beverly Blvd","Los Angeles","CA",90048,34.075153,-118.3802766
+34,"Ralphs Santa Monica #292","1644 Cloverfield Blvd","Santa Monica","CA",90404,34.0270382,-118.4738969
+35,"Pico & Robertson","8783 West Pico Blvd","Los Angeles","CA",90035,34.0549847,-118.3834017
+36,"Colorado & Cloverfield","2200 Colorado Blvd","Santa Monica","CA",90404,34.0268613,-118.4751736
+37,"N Beverly Glen & Beverly Glen Crcl","2952 Beverly Glen Circle","Los Angeles","CA",90077,34.1277986,-118.4440018
+38,"Ocean Park & 29th","2901 Ocean Park Blvd","Santa Monica","CA",90405,34.0201137,-118.4546141
+39,"Santa Monica & Westmount","8595 Santa Monica Blvd","West Hollywood","CA",90069,34.0883887,-118.3789795
+40,"National & Castle Heights","9824 National Blvd","Los Angeles","CA",90034,34.0310957,-118.4008381
+41,"Target LA Beverly T-2775","8480 Beverly Blvd","Los Angeles","CA",90048,34.07523,-118.37559
+42,"La Cienega & Gregory Way","257 S La Cienega Blvd","Beverly Hills","CA",90211,34.0635595,-118.3763946
+43,"15th & Montana","1426 Montana Avenue","Santa Monica","CA",90403,34.0326219,-118.4943795
+44,"Vons-Santa Monica #2002","1311 Wilshire Blvd","Santa Monica","CA",90403,34.0263141,-118.4898398
+45,"La Cienega and Airdrome","1742 S La Cienega Blvd","Los Angeles","CA",90035,34.0460826,-118.3760751
+46,"Venice & Culver","8985 Venice Blvd","Los Angeles","CA",90034,34.0271101,-118.3928048
+47,"Sunset Blvd & N. Kings Rd","8363 N.E. Sunset Blvd","West Hollywood","CA",90069,34.0957707,-118.3721492
+48,"Wilshire & 11th","1030 Wilshire Blvd","Santa Monica","CA",90403,34.0241362,-118.4916396
+49,"Washington & Culver","9718 Washington Blvd","Culver City","CA",90232,34.0221626,-118.3962504
+50,"La Brea & Centinela","941 N. La Brea Avenue","Inglewood","CA",90302,33.9756055,-118.3579056
+51,"Ralph's - Los Angeles #185","5245 W Centinela Ave","Los Angeles","CA",90045,33.9790634,-118.371521
+52,"La Cienega & Centinela","1740 Centinela Avenue","Inglewood","CA",90302,33.977571,-118.369837
+53,"Centinela & La Tijera","5301 Centinela Avenue","Los Angeles","CA",90045,33.9775772,-118.3719534
+54,"Slauson & Sepulveda","6150 Slauson Avenue","Culver City","CA",90230,33.9881091,-118.3927211
+55,"Manchester & Oak","601 West Manchester Blvd","Inglewood","CA",90301,33.9620206,-118.3664427
+56,"Promenade at Howard Hughes Center","6081 Center Drive","Los Angeles","CA",90045,33.9779824,-118.3916636
+57,"Target Culver City South T-2632","6000 Sepulveda Blvd","Culver City","CA",90230,33.9854088,-118.395087
+58,"Vons - Culver City #2212","11030 Jefferson Blvd","Culver City","CA",90230,33.9974489,-118.3942908
+59,"Target Culver City T-198","10820 Jefferson Blvd","Culver City","CA",90230,33.9991035,-118.3935228
+60,"Vons - Inglewood #2503","500 E Manchester Blvd","Inglewood","CA",90301,33.9604025,-118.3492995
+61,"Ralphs - Culver City #284","10772 Jefferson Blvd","Culver City","CA",90230,34.0023678,-118.3935481
